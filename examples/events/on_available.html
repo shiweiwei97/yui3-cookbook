@@ -5,14 +5,13 @@
 <script>
 YUI().use('*', function (Y) {    
     if (Y.one('#demo') === null) {
-        Y.log("We're sorry, the #demo node is currently not available.");
-        Y.log('Your function() call is very important to us. Please try again later.');
+        Y.log("the #demo node not available.");
     }
     
     Y.on('available', function () {
-        Y.one('#demo').setHTML('Sorry, I changed the div as fast as I could!');
+        Y.one('#demo').setHTML('#demo node changed.');
     }, '#demo');
 });
 </script>
 
-<div id="demo"></div>
+<div id="demo">Original Content</div>

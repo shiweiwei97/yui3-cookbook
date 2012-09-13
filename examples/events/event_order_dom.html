@@ -7,8 +7,11 @@
 <script>
 YUI().use('node-base', function (Y) {
     var p = Y.one('p');
-    p.on('click', function () { Y.log('I will execute first.') });
-    p.on('click', function () { Y.log('I will execute second.') });
+    p.on('click', function (e) {
+    	Y.log('I will execute first.');
+    	e.stopImmediatePropagation();
+    });
     p.on('click', function () { Y.log('I will execute third.') });
+    p.after('click', function () { Y.log('I will execute second.') });
 });
 </script>

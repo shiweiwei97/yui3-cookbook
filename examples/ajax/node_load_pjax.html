@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<title>Loading HTML Content into a Node</title>
+
+<h1>My Awesome Documentation</h1>
+<ul id="nav">
+    <li><a href="install.html" class="yui3-pjax">Installation</a></li>
+    <li><a href="examples.html" class="yui3-pjax">Examples</a></li>
+    <li><a href="api.html" class="yui3-pjax">API Reference</a></li>
+</ul>
+<div id="main">
+    <p>Some great documentation is about to appear here!</p>
+    <p>Boy howdy!</p>
+</div>
+<p id="footer">This is a footer. Copyright 2012, by ME.</p>
+
+<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
+<script>
+YUI().use('pjax', function (Y) {
+    new Y.Pjax({container: '#main'});
+});
+</script>

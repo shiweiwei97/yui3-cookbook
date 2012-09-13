@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<title>IO Queue</title>
+
+<div id="demo"> </div>
+
+<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
+<script>
+YUI().use("io-queue", 'node-base', 'json-parse', function(Y) {
+
+    var cfg = {
+        on: {
+            success: function (id, response) {
+                var answer = Y.JSON.parse(response.responseText);
+                Y.one('#demo').append('<p> No: ' + answer.no + '</p>');
+            }
+        }
+    };
+
+    Y.io.queue.stop();
+
+    var task0 = Y.io.queue('io-queue.php', Y.merge(cfg, {data: {"no": 0}}));
+    var task1 = Y.io.queue('io-queue.php', Y.merge(cfg, {data: {"no": 1}}));
+    var task2 = Y.io.queue('io-queue.php', Y.merge(cfg, {data: {"no": 2}}));
+    var task3 = Y.io.queue('io-queue.php', Y.merge(cfg, {data: {"no": 3}}));
+
+    Y.io.queue.promote(task2);
+    Y.io.queue.remove(task3);
+
+    Y.io.queue.start();
+});
+</script>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<title>Defining a Konami Synthetic Event</title>
+
+<input type="text" id="text-input">
+<p>
+    <input type="text" class="ko">
+    <input type="text" class="ko">
+    <input type="text" class="ko">
+</p>
+
+<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
+<script>
+YUI().use('node', 'event-synthetic', function (Y) {
+    var config = {
+        _keys: [ 38, 38, 40, 40, 37, 39, 37, 39, 66, 65 ],
+
+        on: function (node, sub, notifier, filter) {
+            var method = (filter) ? 'delegate' : 'on',
+                progressKey = '-yui3-konami-progress(' + Y.guid() + ')',
+                keys = this._keys,
+                len = keys.length;
+
+            sub.handle = node[method]("keydown", function (e) {
+                var progress = this.getData(progressKey) || 0;
+
+                if (e.keyCode === keys[progress]) {
+                    if (++progress === len) {
+                        this.clearData(progressKey);
+                        progress = 0;
+                        notifier.fire(e);
+                    }
+                } else {
+                    progress = 0;
+                }
+
+                this.setData(progressKey, progress);
+
+            }, (filter || node));
+        },
+
+        detach: function (node, sub) {
+            sub.handle.detach();
+        }
+    };
+    config.delegate = config.on;
+    config.detachDelegate = config.detach;
+
+    Y.Event.define('konami', config);
+
+    Y.one('#text-input').on('konami', function (e) {
+        alert("You're a filthy cheater, and will be rewarded for it");
+    });
+
+    Y.one('p').delegate('konami', function (e) {
+        alert("You're a filthy cheater, and will be rewarded for it");
+    }, '.ko');
+});
+</script>
